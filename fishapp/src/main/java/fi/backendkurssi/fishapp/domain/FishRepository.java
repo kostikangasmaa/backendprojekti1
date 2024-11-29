@@ -2,9 +2,9 @@ package fi.backendkurssi.fishapp.domain;
 
 import java.util.List;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FishRepository extends CrudRepository<Fish, Long>{
-    List<Fish> findBySpecies(String species);
 
+public interface FishRepository extends JpaRepository<Fish, Long>{
+    List<Fish> findByUser(User user);
 }

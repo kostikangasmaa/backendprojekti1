@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Fish List</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link type="text/css" rel="stylesheet" th:href="@{css/bootstrap.min.css}" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .fish-list-container {
+            margin-top: 50px;
+        }
+
+        .table {
+            margin-top: 20px;
+        }
+
+        .btn-danger {
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-logout {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: white;
+        }
+
+        .btn-logout:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My Fishes</h1>
+            <a th:href="@{/addfish}" class="btn btn-primary">Add Fish</a>
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" class="btn btn-logout" value="Logout" />
+            </form>
+        </div>
+        <div class="fish-list-container">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Species</th>
+                            <th>Length (cm)</th>
+                            <th>Weight (kg)</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="fish : ${fishes}">
+                            <td th:text="${fish.species}">Species</td>
+                            <td th:text="${fish.length}">Length</td>
+                            <td th:text="${fish.weight}">Weight</td>
+                            <td th:text="${#dates.format(fish.date, 'yyyy-MM-dd')}">Date</td>
+                            <td th:text="${fish.location}" class="location-cell" data-location="${fish.location}">
+                                Location</td>
+                            <td>
+                                <form th:action="@{/deletefish/{id}(id=${fish.fishid})}" method="post">
+                                    <input type="submit" class="btn btn-danger" value="Delete" />
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

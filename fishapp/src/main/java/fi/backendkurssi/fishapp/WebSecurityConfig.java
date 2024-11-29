@@ -14,14 +14,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import fi.backendkurssi.fishapp.web.UserDetailServiceImpl;
-    
+
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
     @Autowired
     private UserDetailServiceImpl userDetailsService;
 
-    private static final AntPathRequestMatcher[] WHITE_LIST_URLS = { 
+    private static final AntPathRequestMatcher[] WHITE_LIST_URLS = {
             new AntPathRequestMatcher("/h2-console/**") };
 
     @Bean
@@ -29,25 +29,25 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests(
                 authorize -> authorize
-                .requestMatchers(antMatcher("/css/**")).permitAll()
-                .requestMatchers(WHITE_LIST_URLS).permitAll()
-                .anyRequest().authenticated())
-                .headers(headers -> 
-                headers.frameOptions(frameOptions -> frameOptions 
+                        .requestMatchers(antMatcher("/css/**")).permitAll()
+                        .requestMatchers(WHITE_LIST_URLS).permitAll()
+                        .requestMatchers(antMatcher("/signup")).permitAll()
+                        .requestMatchers(antMatcher("/saveuser")).permitAll()
+                        .anyRequest().authenticated())
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions
                         .disable())) // for h2console
-                .formLogin(formlogin -> 
-                    formlogin.loginPage("/login")
-                    .defaultSuccessUrl("/fishlist", true)
-                    .permitAll())
+                .formLogin(formlogin -> formlogin.loginPage("/login")
+                        .defaultSuccessUrl("/fishlist", true)
+                        .permitAll())
                 .logout(logout -> logout.permitAll())
-                .csrf(csrf -> csrf.disable()); 
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
 
     @Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
-	}
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+    }
 
 }

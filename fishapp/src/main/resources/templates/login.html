@@ -1,24 +1,80 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-    <head>
-        <title>FishApp</title>
-        <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
-    </head>
-    <body>
-     <div class="col-md-4 col-md-offset-4">
-        <div class="alert alert-danger" th:if="${param.error}">
-            Invalid username and password.
-        </div>
-        <div class="alert alert-warning" th:if="${param.logout}">
-            You have been logged out.
-        </div>
-        <form th:action="@{/login}" method="post">
-            <div><label> User Name : <input type="text" name="username" class="form-control"/> </label></div>
-            <div><label> Password: <input type="password" name="password" class="form-control"/> </label></div>
-            <div><input type="submit" value="Sign In" class="btn btn-primary"/></div>
-        </form>
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
-       </div>
-    </body>
+<head>
+    <title>FishApp</title>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .login-container {
+            margin-top: 100px;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .login-title {
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+        .btn-signup {
+            width: 100%;
+            background-color: #28a745;
+            border-color: #28a745;
+            color: white;
+        }
+        .btn-primary:hover, .btn-signup:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .btn-signup:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        .signup-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4 login-container">
+                <h1 class="text-center login-title">FishApp</h1>
+                <div class="alert alert-danger" th:if="${param.error}">
+                    Invalid username and password.
+                </div>
+                <div class="alert alert-warning" th:if="${param.logout}">
+                    You have been logged out.
+                </div>
+                <form th:action="@{/login}" method="post">
+                    <div class="form-group">
+                        <label for="username">User Name</label>
+                        <input type="text" id="username" name="username" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Sign In" class="btn btn-primary" />
+                    </div>
+                </form>
+                <a th:href="@{/signup}" class="btn btn-signup signup-link">Sign-up</a>
+            </div>
+        </div>
+    </div>
+</body>
+
 </html>

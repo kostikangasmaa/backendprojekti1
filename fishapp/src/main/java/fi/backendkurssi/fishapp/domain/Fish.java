@@ -2,6 +2,8 @@ package fi.backendkurssi.fishapp.domain;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -9,32 +11,42 @@ public class Fish {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
-    private Long id;
+    private Long fishid;
     private String species;
     private double length;
     private double weight;
+    
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
+    
     private String location;
 
-    public Fish() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private User user;
 
-    public Fish(Long id, String species, double length, double weight, Date date, String location) {
+
+    
+    public Fish(Long fishid, String species, double length, double weight, Date date, String location, User user) {
         super();
-        this.id = id;
+        this.fishid = fishid;
         this.species = species;
         this.length = length;
         this.weight = weight;
         this.date = date;
         this.location = location;
+        this.user = user;
     }
 
-    public Long getId() {
-        return id;
+    public Fish() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getFishid() {
+        return fishid;
+    }
+
+    public void setFishid(Long fishid) {
+        this.fishid = fishid;
     }
 
     public String getSpecies() {
@@ -77,4 +89,12 @@ public class Fish {
         this.location = location;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
+    
