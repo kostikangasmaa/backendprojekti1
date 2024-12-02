@@ -53,6 +53,10 @@
     <div class="container">
         <div class="header">
             <h1>My Fishes</h1>
+            <div class="col-md-4">
+                <p>Logged in as</p>
+                <span  sec:authentication="name">Name</span>
+            </div>
             <a th:href="@{/addfish}" class="btn btn-primary">Add Fish</a>
             <form th:action="@{/logout}" method="post">
                 <input type="submit" class="btn btn-logout" value="Logout" />
@@ -80,7 +84,8 @@
                             <td th:text="${fish.location}" class="location-cell" data-location="${fish.location}">
                                 Location</td>
                             <td>
-                                <form th:action="@{/deletefish/{id}(id=${fish.fishid})}" method="post">
+                                <a th:href="@{/editfish/{id}(id=${fish.fishid})}" class="btn btn-warning">Edit</a>
+                                <form th:action="@{/deletefish/{id}(id=${fish.fishid})}" method="post" style="display:inline;">
                                     <input type="submit" class="btn btn-danger" value="Delete" />
                                 </form>
                             </td>

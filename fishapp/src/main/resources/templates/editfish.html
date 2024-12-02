@@ -2,16 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Add Fish</title>
+    <title>Edit Fish</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link type="text/css" rel="stylesheet" th:href="@{css/bootstrap.min.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         body {
             background-color: #f8f9fa;
         }
 
-        .add-fish-container {
+        .edit-fish-container {
             margin-top: 50px;
             padding: 30px;
             background-color: #ffffff;
@@ -37,9 +37,9 @@
 <body>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-4 add-fish-container">
-                <h1 class="text-center">Add Fish</h1>
-                <form th:action="@{/savefish}" th:object="${fish}" method="post">
+            <div class="col-md-6 col-lg-4 edit-fish-container">
+                <h1 class="text-center">Edit Fish</h1>
+                <form th:action="@{/updatefish/{id}(id=${fish.fishid})}" th:object="${fish}" method="post">
                     <div class="form-group">
                         <label for="species">Species</label>
                         <input type="text" id="species" th:field="*{species}" class="form-control" />
@@ -62,36 +62,45 @@
                     </div>
                     <div id="map"></div>
                     <div class="form-group">
-                        <input type="submit" class="btn btn-primary" value="Add Fish" />
+                        <input type="submit" class="btn btn-primary" value="Update Fish" />
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script><script>
         // Initialize the map
         var map = L.map('map').setView([60.1699, 24.9384], 10); // Centered on Helsinki
-
+    
         // Add OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-
+    
         var marker;
-
-    // Handle map click events
-    map.on('click', function(e) {
-        var latlng = e.latlng;
-        document.getElementById('location').value = latlng.lat + ', ' + latlng.lng;
-
-        // Add a marker to the map
-        if (marker) {
-            marker.setLatLng(latlng);
-        } else {
-            marker = L.marker(latlng).addTo(map);
-        }}
-    );  
+    
+        // Parse the location string into latitude and longitude
+        var locationString = "[[${fish.location}]]";
+        var locationArray = locationString.split(',').map(parseFloat);
+    
+        if (locationArray.length === 2 && !isNaN(locationArray[0]) && !isNaN(locationArray[1])) {
+            var locations = [locationArray[0], locationArray[1]];
+            marker = L.marker(locations).addTo(map);
+            map.setView(locations, 13);
+        }
+    
+        // Handle map click events
+        map.on('click', function(e) {
+            var latlng = e.latlng;
+            document.getElementById('location').value = latlng.lat + ', ' + latlng.lng;
+    
+            // Add a marker to the map
+            if (marker) {
+                marker.setLatLng(latlng);
+            } else {
+                marker = L.marker(latlng).addTo(map);
+            }
+        });
     </script>
 </body>
 

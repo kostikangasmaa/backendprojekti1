@@ -10,12 +10,12 @@ import jakarta.persistence.*;
 public class Fish {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     private Long fishid;
+    
     private String species;
     private double length;
     private double weight;
-    
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
     
